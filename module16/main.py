@@ -34,7 +34,7 @@ st.write(f"your message {message}")
 
 choice = st.radio("pick one" , ["1","2" , "3"])
 
-st.writr(f"your choice is : {choice}")
+st.write(f"your choice is : {choice}")
 
 if st.button("success"):
     st.success("operation wa sucsessful")

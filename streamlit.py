@@ -1,3 +1,4 @@
+import streamlit as st
 from abc import ABC, abstractmethod
 
 
@@ -17,7 +18,7 @@ class Person(ABC):
         if value > 0:
             self._weight = value
         else:
-            print("Weight must be positive")
+            st.error("Weight must be positive")
 
     @property
     def height(self):
@@ -28,7 +29,7 @@ class Person(ABC):
         if value > 0:
             self._height = value
         else:
-            print("Height must be positive")
+            st.error("Height must be positive")
 
     @abstractmethod
     def calculate_bmi(self):
@@ -37,17 +38,6 @@ class Person(ABC):
     @abstractmethod
     def get_bmi_category(self):
         pass
-
-    def print_info(self):
-        bmi = self.calculate_bmi()
-        category = self.get_bmi_category()
-
-        print("Name:", self.name)
-        print("Weight:", self.weight, "kg")
-        print("Height:", self.height, "cm")
-        print("Age:", self.age)
-        print("BMI:", round(bmi, 2))
-        print("Category:", category)
 
 
 class Adult(Person):
@@ -84,42 +74,30 @@ class Child(Person):
             return "Obese"
 
 
-class BMIApp:
-    def __init__(self):
-        self.people = []
+# Streamlit UI
+st.title("BMI Calculator App")
 
-    def add_person(self, person):
-        self.people.append(person)
+name = st.text_input("Enter Name")
+age = st.number_input("Enter Age", min_value=0, step=1)
+weight = st.number_input("Enter Weight (kg)", min_value=0.0)
+height = st.number_input("Enter Height (cm)", min_value=0.0)
 
-    def collect_user_data(self):
-        name = input("Enter Name: ")
-        age = int(input("Enter Age: "))
-        weight = float(input("Enter Weight (kg): "))
-        height = float(input("Enter Height (cm): "))
-
+if st.button("Calculate BMI"):
+    if name and weight > 0 and height > 0:
         if age >= 18:
             person = Adult(name, age, weight, height)
         else:
             person = Child(name, age, weight, height)
 
-        self.add_person(person)
+        bmi = person.calculate_bmi()
+        category = person.get_bmi_category()
 
-    def print_result(self):
-        print("\n=== BMI RESULT ===")
-        for person in self.people:
-            person.print_info()
-
-    def run(self):
-        while True:
-            self.collect_user_data()
-            choice = input("\nAdd another person? (y/n): ").lower()
-
-            if choice != "y":
-                break
-
-        self.print_result()
-
-
-if __name__ == "__main__":
-    app = BMIApp()
-    app.run()
+        st.subheader("Result")
+        st.write(f"Name: {name}")
+        st.write(f"Age: {age}")
+        st.write(f"Weight: {weight} kg")
+        st.write(f"Height: {height} cm")
+        st.write(f"BMI: {round(bmi, 2)}")
+        st.write(f"Category: {category}")
+    else:
+        st.warning("Please fill all fields correctly.")
