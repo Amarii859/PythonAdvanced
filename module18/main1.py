@@ -4,7 +4,7 @@ import plotly.express as px
 
 from module3.sets import unique_list
 
-books_df = pd.read_csv("bestsellers_with_categories_2022_03_27.csv")
+books_df = pd.read_csv("../module19/bestsellers_with_categories_2022_03_27.csv")
 
 st.title("Bestselling Books")
 st.write("This app analyzes the amazon top selling books")
