@@ -1,0 +1,23 @@
+from pydantic import BaseModel, conint, constr
+from typing import Optional
+
+from validators import email
+
+# class User(BaseModel):
+#     id: int
+#     name: str
+#     age: int
+#     email: str
+#
+# user = User(id=1, name="Dren", age="16", email="test@gmail.com")
+# print(user)
+
+class User(BaseModel):
+    id: int
+    name: str
+    age: int = 0
+    email: str = "test@gmail.com"
+
+user1 = User(id=2, name="Dreni")
+print(user1)
+
